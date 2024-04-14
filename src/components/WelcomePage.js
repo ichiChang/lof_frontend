@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import Righttop from "../images/20.svg";
 import RightBottom from "../images/17.svg";
 import LeftBottom from "../images/18.svg";
-import Back from "../images/back.svg";
-import Center from "../images/center.svg";
+import Center from "../images/Center.png";
 import Found from "../images/found.svg";
 import Lost from "../images/lostim.png";
 import Green from "../images/21.svg";
@@ -39,7 +38,6 @@ const WelcomePage = () => {
       >
         <div
           style={{
-            backgroundImage: `url(${Back})`,
             backgroundRepeat: "no-repeat",
             backgroundPosition: "0% 0%",
             backgroundSize: "800px 700px",
@@ -57,11 +55,9 @@ const WelcomePage = () => {
           style={{
             backgroundImage: `url(${Center})`,
             backgroundRepeat: "no-repeat",
-            backgroundPosition: "50% 50%",
-            backgroundSize: "1500px 750px",
             position: "absolute",
             top: "35%",
-            right: "20%",
+            right: "10%",
             opacity: animate ? 1 : 0,
             transform: animate ? "scale(1)" : "scale(0)",
             transition: "opacity 1s ease-in-out, transform 1s ease-in-out",
