@@ -19,7 +19,7 @@ const PersonalPage = () => {
           console.log("Error fetching user data: ", error);
         });
     }
-  }, []);
+  }, [setAnimate]);
 
   const handleLogout = () => {
     localStorage.setItem("userId", "0");
