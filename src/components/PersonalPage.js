@@ -3,7 +3,7 @@ import MyNavbar from "./MyNavBar";
 import UserService from "../services/UserService";
 
 const PersonalPage = () => {
-  const [animate, setAnimate] = useState(false);
+  const [setAnimate] = useState(false);
   const [userName, setUserName] = useState("");
 
   useEffect(() => {
