@@ -1,13 +1,14 @@
 /* eslint-disable import/no-anonymous-default-export */
-import axios from "axios";
-
-const LOST_REST_API_URL = "https://ncculof.azurewebsites.net/api/itemonroads";
-
 class LostService {
   async getLosts() {
     try {
-      const response = await axios.get(LOST_REST_API_URL);
-      return response.data;
+      const response = await fetch(
+        "https://ncculof.azurewebsites.net/api/itemonroads"
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
     } catch (error) {
       console.error("Error fetching lost items:", error);
       throw error;
@@ -16,30 +17,43 @@ class LostService {
 
   async searchLostItems(searchTerm) {
     try {
-      const response = await axios.get(
-        `${LOST_REST_API_URL}/name/${searchTerm}`
+      const response = await fetch(
+        `https://ncculof.azurewebsites.net/api/itemonroads/name/${searchTerm}`
       );
-      return response.data;
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
     } catch (error) {
       console.error("Error searching lost items:", error);
       throw error;
     }
   }
+
   async getLostItemsByType(type) {
     try {
-      const response = await axios.get(`${LOST_REST_API_URL}/type/${type}`);
-      return response.data;
+      const response = await fetch(
+        `https://ncculof.azurewebsites.net/api/itemonroads/type/${type}`
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
     } catch (error) {
       console.error("Error searching lost items by type:", error);
       throw error;
     }
   }
+
   async getLostItemsByPlace(placeName) {
     try {
-      const response = await axios.get(
-        `${LOST_REST_API_URL}/place/${placeName}`
+      const response = await fetch(
+        `https://ncculof.azurewebsites.net/api/itemonroads/place/${placeName}`
       );
-      return response.data;
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
     } catch (error) {
       console.error("Error searching lost items by place:", error);
       throw error;
@@ -48,16 +62,25 @@ class LostService {
 
   async createLost(lostItem) {
     try {
-      const response = await axios.post(LOST_REST_API_URL, lostItem, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      return response.data;
+      const response = await fetch(
+        "https://ncculof.azurewebsites.net/api/itemonroads",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(lostItem),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
     } catch (error) {
       console.error("Error creating item:", error);
       throw error;
     }
   }
 }
+
 export default new LostService();

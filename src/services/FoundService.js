@@ -1,21 +1,28 @@
-import axios from "axios";
-
-const FOUND_REST_API_URL = "https://ncculof.azurewebsites.net/api/itemtofinds";
-
 class FoundService {
   async getFounds() {
     try {
-      const response = await axios.get(FOUND_REST_API_URL);
-      return response.data;
+      const response = await fetch(
+        "https://ncculof.azurewebsites.net/api/itemtofinds"
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
     } catch (error) {
       console.error("Error fetching found items:", error);
       throw error;
     }
   }
+
   async getFoundItemsByType(type) {
     try {
-      const response = await axios.get(`${FOUND_REST_API_URL}/type/${type}`);
-      return response.data;
+      const response = await fetch(
+        `https://ncculof.azurewebsites.net/api/itemtofinds/type/${type}`
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
     } catch (error) {
       console.error("Error searching found items by type:", error);
       throw error;
@@ -24,22 +31,28 @@ class FoundService {
 
   async getFoundItemsByPlace(placeName) {
     try {
-      const response = await axios.get(
-        `${FOUND_REST_API_URL}/place/${placeName}`
+      const response = await fetch(
+        `https://ncculof.azurewebsites.net/api/itemtofinds/place/${placeName}`
       );
-      return response.data;
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
     } catch (error) {
-      console.error("Error searching found items by type:", error);
+      console.error("Error searching found items by place:", error);
       throw error;
     }
   }
 
   async searchFoundItems(searchTerm) {
     try {
-      const response = await axios.get(
-        `${FOUND_REST_API_URL}/name/${searchTerm}`
+      const response = await fetch(
+        `https://ncculof.azurewebsites.net/api/itemtofinds/name/${searchTerm}`
       );
-      return response.data;
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
     } catch (error) {
       console.error("Error searching found items:", error);
       throw error;
@@ -48,12 +61,20 @@ class FoundService {
 
   async createFound(foundItem) {
     try {
-      const response = await axios.post(FOUND_REST_API_URL, foundItem, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      return response.data;
+      const response = await fetch(
+        "https://ncculof.azurewebsites.net/api/itemtofinds",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(foundItem),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
     } catch (error) {
       console.error("Error creating item:", error);
       throw error;
