@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-import axios from "axios";
 import { Button, Modal, Toast, ToastContainer } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import DatePicker from "react-datepicker";
@@ -97,11 +96,23 @@ const CreateFoundItem = () => {
     try {
       console.log(itemData);
       const userID = localStorage.getItem("userId");
-      const response = await axios.post(
-        `http://localhost:8080/api/itemtofinds/${userID}`,
-        itemData
+      const response = await fetch(
+        `https://ncculof.azurewebsites.net/api/itemtofinds/${userID}`,
+        {
+          method: "POST", // 设置请求方法为POST
+          headers: {
+            "Content-Type": "application/json", // 设置请求头部，声明发送的数据类型为JSON
+          },
+          body: JSON.stringify(itemData), // 将数据转换为JSON字符串
+        }
       );
-      console.log("Item created:", response.data);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`); // 检查响应状态码是否表示成功
+      }
+
+      const data = await response.json(); // 解析响应体中的JSON数据
+      console.log("Item created:", data);
 
       // Show the Bootstrap toast
       setShowToast(true);

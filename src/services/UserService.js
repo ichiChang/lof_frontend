@@ -1,33 +1,86 @@
-import axios from "axios";
+/* eslint-disable import/no-anonymous-default-export */
 
 const BASE_URL = "https://ncculof.azurewebsites.net/api";
 
 class UserService {
-  getUsers() {
+  async getUsers() {
     const url = `${BASE_URL}/users`;
-    return axios.get(url);
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
   }
 
-  getUserById(id) {
+  async getUserById(id) {
     const url = `${BASE_URL}/users/${id}`;
-    return axios.get(url);
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching user by id:", error);
+    }
   }
 
-  createUser(user) {
+  async createUser(user) {
     const url = `${BASE_URL}/users`;
-    return axios.post(url, user);
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Error creating user:", error);
+    }
   }
 
-  updateUser(id, user) {
+  async updateUser(id, user) {
     const url = `${BASE_URL}/users/${id}`;
-    return axios.put(url, user);
+    try {
+      const response = await fetch(url, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Error updating user:", error);
+    }
   }
 
-  deleteUser(id) {
+  async deleteUser(id) {
     const url = `${BASE_URL}/users/${id}`;
-    return axios.delete(url);
+    try {
+      const response = await fetch(url, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
   }
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default new UserService();

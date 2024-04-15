@@ -4,7 +4,6 @@ import MyNavbar from "./MyNavBar";
 import BG from "../images/loginBG.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-regular-svg-icons";
-import axios from "axios";
 import { ToastContainer, Toast } from "react-bootstrap";
 
 const LoginPage = () => {
@@ -51,23 +50,23 @@ const LoginPage = () => {
 
   const handleLogin = () => {
     const email = document.getElementById("email").value;
-    axios
-      .get(`http://localhost:8080/api/users/login/${email}`)
+    fetch(`https://ncculof.azurewebsites.net/api/users/login/${email}`)
       .then((response) => {
-        const userId = response.data;
-        // Store userId in local storage
+        if (!response.ok) {
+          throw new Error("Email is not registered");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const userId = data; // Assume data contains the userId
         localStorage.setItem("userId", userId);
-        // Clear error message
         setError("");
-        // Set success message
         setSuccessMessage("Login successful!");
-        // Redirect to home page after 1 second
         setTimeout(() => {
           window.location.href = "/";
         }, 1000);
       })
       .catch((error) => {
-        // Handle error here
         console.error(error);
         setError("The email is not yet registered.");
       });

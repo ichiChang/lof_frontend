@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { ToastContainer, Toast } from "react-bootstrap";
 import MyNavbar from "./MyNavBar";
 import BG from "../images/loginBG.jpg";
@@ -56,23 +55,30 @@ const RegisterPage = () => {
         },
       };
 
-      axios
-        .post("http://localhost:8080/api/users/register", requestBody)
+      fetch("http://localhost:8080/api/users/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      })
         .then((response) => {
-          // Handle successful response here
-          console.log(response.data);
-          setSuccessMessage(response.data); // Set success message from response
-          // Clear error message
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
+          setSuccessMessage(data.message); // Assumes 'message' is the success message
           setError("");
-          // Redirect to /login page after a delay of 3 seconds
           setTimeout(() => {
             window.location.href = "/login";
           }, 1000);
         })
         .catch((error) => {
-          // Handle error here
           console.error(error);
-          setError(error.response.data); // Set error message from response
+          setError(error.message); // Assumes the server error message will be in 'message' property
         });
     }
   };

@@ -1,6 +1,5 @@
 /* eslint-disable react/style-prop-object */
 import React, { useState, useRef } from "react";
-import axios from "axios";
 import { Button, Modal, Toast, ToastContainer } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-datepicker/dist/react-datepicker.css";
@@ -106,11 +105,23 @@ const CreateLostItem = () => {
 
     try {
       const userID = localStorage.getItem("userId"); // 从localStorage中获取userID的值
-      const response = await axios.post(
-        `http://localhost:8080/api/itemonroads/${userID}`, // 使用userID作为路径变量
-        itemData
+      const response = await fetch(
+        `https://ncculof.azurewebsites.net/api/itemonroads/${userID}`,
+        {
+          method: "POST", // 设置方法为POST
+          headers: {
+            "Content-Type": "application/json", // 设置内容类型为JSON
+          },
+          body: JSON.stringify(itemData), // 将itemData对象转为JSON字符串作为请求体
+        }
       );
-      console.log("Item created:", response.data);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`); // 检查响应是否成功
+      }
+
+      const data = await response.json(); // 解析JSON数据
+      console.log("Item created:", data);
 
       // Show the Bootstrap toast
       setShowToast(true);

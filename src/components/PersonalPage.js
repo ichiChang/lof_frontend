@@ -1,9 +1,10 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import MyNavbar from "./MyNavBar";
 import UserService from "../services/UserService";
 
 const PersonalPage = () => {
-  const [setAnimate] = useState(false);
+  const [animate, setAnimate] = useState(false);
   const [userName, setUserName] = useState("");
 
   useEffect(() => {
@@ -19,7 +20,7 @@ const PersonalPage = () => {
           console.log("Error fetching user data: ", error);
         });
     }
-  }, [setAnimate]);
+  }, []);
 
   const handleLogout = () => {
     localStorage.setItem("userId", "0");
